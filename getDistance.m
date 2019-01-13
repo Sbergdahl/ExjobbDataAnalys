@@ -24,8 +24,8 @@ navDownSampeledHector= [navDownSampledX navDownSampledY];
 
 %distHector = diag(pdist2(data(:,2:3),navDownSampeledHector(:,2:3)));
 distHector = diag(pdist2(data(:,2:3),navDownSampeledHector));
-% 
-% 
+
+
 %  figure
 %  hold on
 %  plot(navDownSampledX)
@@ -36,27 +36,4 @@ distHector = diag(pdist2(data(:,2:3),navDownSampeledHector));
 %  plot(navDownSampledY)
 %  plot(data(1:end,3))
 %  
-%  
-%   
-%  figure
-%  hold on
-%  plot(hectUpSampledX)
-%  plot(navCopy(1:end,2))
-%  
-%   figure
-%  hold on
-%  plot(hectUpSampledY)
-%  plot(navCopy(1:end,3))
-%  
-%  
-%   figure
-%  hold on
-%  plot(data(:,1), data(:,2))
-%  plot(navCopy(:,1), navCopy(:,2))
-%  
-%  
-%   figure
-%  hold on
-%  plot(data(:,1), data(:,3))
-%  plot(navCopy(:,1), navCopy(:,3))
-%  
+% 
