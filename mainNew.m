@@ -1,8 +1,8 @@
 %data paths
 clear all
 tic;
-testcase = 'runt_med_pelare'
-speed = 'fast'
+testcase = 'korridor'
+speed = 'medium'
 fileNav = 'dead_navigation.txt'
 fileDeadReck ='dead_reckoning.txt'
 fileGyroReck ='dead_reckoning_gyro.txt'
@@ -125,11 +125,22 @@ hectorData2(isoutlier(hectorData2(:,2),'movmedian',10),:)= [];
 hectorData3(isoutlier(hectorData3(:,2),'movmedian',10),:)= [];
 hectorData4(isoutlier(hectorData4(:,2),'movmedian',10),:)= [];
 hectorData5(isoutlier(hectorData5(:,2),'movmedian',10),:)= [];
+hectorData1(isoutlier(hectorData1(:,3),'movmedian',10),:)= [];
+hectorData2(isoutlier(hectorData2(:,3),'movmedian',10),:)= [];
+hectorData3(isoutlier(hectorData3(:,3),'movmedian',10),:)= [];
+hectorData4(isoutlier(hectorData4(:,3),'movmedian',10),:)= [];
+hectorData5(isoutlier(hectorData5(:,3),'movmedian',10),:)= [];
+
 gmapData1(isoutlier(gmapData1(:,2),'movmedian',10),:)= [];
 gmapData2(isoutlier(gmapData2(:,2),'movmedian',10),:)= [];
 gmapData3(isoutlier(gmapData3(:,2),'movmedian',10),:)= [];
 gmapData4(isoutlier(gmapData4(:,2),'movmedian',10),:)= [];
 gmapData5(isoutlier(gmapData5(:,2),'movmedian',10),:)= [];
+gmapData1(isoutlier(gmapData1(:,3),'movmedian',10),:)= [];
+gmapData2(isoutlier(gmapData2(:,3),'movmedian',10),:)= [];
+gmapData3(isoutlier(gmapData3(:,3),'movmedian',10),:)= [];
+gmapData4(isoutlier(gmapData4(:,3),'movmedian',10),:)= [];
+gmapData5(isoutlier(gmapData5(:,3),'movmedian',10),:)= [];
 
 %odom data
 odomData1(isoutlier(odomData1(:,2),'movmedian',10),:)= [];
@@ -338,10 +349,10 @@ elseif hectorData1(end,1) <= min([navigation(end,1) deadReck(end,1) deadGyro(end
     gmapData5(gmapData5(:,1) > hectorData1(end,1), :) = [];   
     
     
-elseif gmapData(end,1) <= min([navigation(end,1) deadReck(end,1) deadGyro(end,1) hectorData1(end,1)])
-    navigation(navigation(:, 1)> gmapData(end,1), :)= [];
-    deadReck(deadReck(:, 1)> gmapData(end,1), :)= [];
-    deadGyro(deadGyro(:,1) > gmapData(end,1), :) = [];
+elseif gmapData1(end,1) <= min([navigation(end,1) deadReck(end,1) deadGyro(end,1) hectorData1(end,1)])
+    navigation(navigation(:, 1)> gmapData1(end,1), :)= [];
+    deadReck(deadReck(:, 1)> gmapData1(end,1), :)= [];
+    deadGyro(deadGyro(:,1) > gmapData1(end,1), :) = [];
     hectorData1(hectorData1(:,1) > gmapData1(end,1), :) = [];
     hectorData2(hectorData2(:,1) > gmapData1(end,1), :) = [];
     hectorData3(hectorData3(:,1) > gmapData1(end,1), :) = [];
@@ -390,39 +401,39 @@ figure()
 hold on
 title('Path of AGV Gmapping')
 axis ([-18 6 -18 6])
-plot(navigation(:,2)-navigation(1,2),navigation(:,3)-navigation(1,3),'r','LineWidth',1.5,'DisplayName','Ground Truth')
-plot(deadReck(:,2)-deadReck(1,2),deadReck(:,3)-deadReck(1,3),'k-.','LineWidth',1.5,'DisplayName','Dead Reckoning')
-plot(deadGyro(:,2)-deadGyro(1,2),deadGyro(:,3)-deadGyro(1,3),'k-','LineWidth',1.5,'DisplayName','Dead Reckoning Gyroscope')
-plot(gmapData1(:,2)-gmapData1(1,2),gmapData1(:,3)-gmapData1(1,3),'b','LineWidth',1.2,'DisplayName','Gmapping 1')
-plot(gmapData2(:,2)-gmapData2(1,2),gmapData2(:,3)-gmapData2(1,3),'b','LineWidth',1.2,'DisplayName','Gmapping 2')
-plot(gmapData3(:,2)-gmapData3(1,2),gmapData3(:,3)-gmapData3(1,3),'b','LineWidth',1.2,'DisplayName','Gmapping 3')
-plot(gmapData4(:,2)-gmapData4(1,2),gmapData4(:,3)-gmapData4(1,3),'b','LineWidth',1.2,'DisplayName','Gmapping 4')
-plot(gmapData5(:,2)-gmapData5(1,2),gmapData5(:,3)-gmapData5(1,3),'b','LineWidth',1.2,'DisplayName','Gmapping 5')
+plot(navigation(:,2)-navigation(1,2),navigation(:,3)-navigation(1,3),'r','LineWidth',1.5)
+plot(deadReck(:,2)-deadReck(1,2),deadReck(:,3)-deadReck(1,3),'k-.','LineWidth',1.5)
+plot(deadGyro(:,2)-deadGyro(1,2),deadGyro(:,3)-deadGyro(1,3),'k-','LineWidth',1.5)
+plot(gmapData1(:,2)-gmapData1(1,2),gmapData1(:,3)-gmapData1(1,3),'b','LineWidth',1.2)
+plot(gmapData2(:,2)-gmapData2(1,2),gmapData2(:,3)-gmapData2(1,3),'b','LineWidth',1.2)
+plot(gmapData3(:,2)-gmapData3(1,2),gmapData3(:,3)-gmapData3(1,3),'b','LineWidth',1.2)
+plot(gmapData4(:,2)-gmapData4(1,2),gmapData4(:,3)-gmapData4(1,3),'b','LineWidth',1.2)
+plot(gmapData5(:,2)-gmapData5(1,2),gmapData5(:,3)-gmapData5(1,3),'b','LineWidth',1.2)
 % plot(odomData1(:,2)-odomData1(1,2),odomData1(:,3)-odomData1(1,3),'b-.','LineWidth',1.2)
 % plot(odomData2(:,2)-odomData2(1,2),odomData2(:,3)-odomData2(1,3),'b-.','LineWidth',1.2)
 % plot(odomData3(:,2)-odomData3(1,2),odomData3(:,3)-odomData3(1,3),'b-.','LineWidth',1.2)
 % plot(odomData4(:,2)-odomData4(1,2),odomData4(:,3)-odomData4(1,3),'b-.','LineWidth',1.2)
 % plot(odomData5(:,2)-odomData5(1,2),odomData5(:,3)-odomData5(1,3),'b-.','LineWidth',1.2)
-legend('show')
+legend('Ground Truth','Dead Reckoning','Dead Reckoning IMU','Gmapping')
 
 figure()
 hold on
 title('Path of AGV Hector')
 axis ([-18 6 -18 6])
-plot(navigation(:,2)-navigation(1,2),navigation(:,3)-navigation(1,3),'r','LineWidth',1.5,'DisplayName','Ground Truth')
-plot(deadReck(:,2)-deadReck(1,2),deadReck(:,3)-deadReck(1,3),'k-.','LineWidth',1.5,'DisplayName','Dead Reckoning')
-plot(deadGyro(:,2)-deadGyro(1,2),deadGyro(:,3)-deadGyro(1,3),'k-','LineWidth',1.5,'DisplayName','Dead Reckoning Gyroscope')
-plot(hectorData1(:,2)-hectorData1(1,2),hectorData1(:,3)-hectorData1(1,3),'b','LineWidth',1.2,'DisplayName','Hector 1')
-plot(hectorData2(:,2)-hectorData2(1,2),hectorData2(:,3)-hectorData2(1,3),'b','LineWidth',1.2,'DisplayName','Hector 2')
-plot(hectorData3(:,2)-hectorData3(1,2),hectorData3(:,3)-hectorData3(1,3),'b','LineWidth',1.2,'DisplayName','Hector 3')
-plot(hectorData4(:,2)-hectorData4(1,2),hectorData4(:,3)-hectorData4(1,3),'b','LineWidth',1.2,'DisplayName','Hector 4')
-plot(hectorData5(:,2)-hectorData5(1,2),hectorData5(:,3)-hectorData5(1,3),'b','LineWidth',1.2,'DisplayName','Hector 5')
+plot(navigation(:,2)-navigation(1,2),navigation(:,3)-navigation(1,3),'r','LineWidth',1.5)
+plot(deadReck(:,2)-deadReck(1,2),deadReck(:,3)-deadReck(1,3),'k-.','LineWidth',1.5)
+plot(deadGyro(:,2)-deadGyro(1,2),deadGyro(:,3)-deadGyro(1,3),'k-','LineWidth',1.5)
+plot(hectorData1(:,2)-hectorData1(1,2),hectorData1(:,3)-hectorData1(1,3),'b','LineWidth',1.2)
+plot(hectorData2(:,2)-hectorData2(1,2),hectorData2(:,3)-hectorData2(1,3),'b','LineWidth',1.2)
+plot(hectorData3(:,2)-hectorData3(1,2),hectorData3(:,3)-hectorData3(1,3),'b','LineWidth',1.2)
+plot(hectorData4(:,2)-hectorData4(1,2),hectorData4(:,3)-hectorData4(1,3),'b','LineWidth',1.2)
+plot(hectorData5(:,2)-hectorData5(1,2),hectorData5(:,3)-hectorData5(1,3),'b','LineWidth',1.2)
 % plot(odomData1(:,2)-odomData1(1,2),odomData1(:,3)-odomData1(1,3),'b-.','LineWidth',1.2)
 % plot(odomData2(:,2)-odomData2(1,2),odomData2(:,3)-odomData2(1,3),'b-.','LineWidth',1.2)
 % plot(odomData3(:,2)-odomData3(1,2),odomData3(:,3)-odomData3(1,3),'b-.','LineWidth',1.2)
 % plot(odomData4(:,2)-odomData4(1,2),odomData4(:,3)-odomData4(1,3),'b-.','LineWidth',1.2)
 % plot(odomData5(:,2)-odomData5(1,2),odomData5(:,3)-odomData5(1,3),'b-.','LineWidth',1.2)
-legend('show')
+legend('Ground Truth','Dead Reckoning','Dead Reckoning IMU','Hector')
 
 
 % 
@@ -502,21 +513,36 @@ legend('Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
 %%
 
 disp('slutavstånd deadReck')
-disp(deadReck(end))
+disp(distDead(end))
 disp('slutavstånd gyro')
-disp(deadGyro(end))
+disp(distGyro(end))
 disp('slutavstånd gmap')
-disp(distGmap1(end))
-disp(distGmap2(end))
-disp(distGmap3(end))
-disp(distGmap4(end))
-disp(distGmap5(end))
+tst = [num2str(distGmap1(end)), ' & ', num2str(distGmap2(end)),' & ', num2str(distGmap3(end)),' & ',num2str(distGmap4(end)),' & ',num2str(distGmap5(end)),' & ',num2str(mean([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)])),' & ',num2str(var([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)]))];
+disp(tst)
+% disp(distGmap1(end))
+% disp(distGmap2(end))
+% disp(distGmap3(end))
+% disp(distGmap4(end))
+% disp(distGmap5(end))
+% disp('mean gmap')
+% disp(mean([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)]))
+% disp('var gmap')
+% disp(var([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)]))
 disp('slutavstånd hector')
-disp(disthector1(end))
-disp(disthector2(end))
-disp(disthector3(end))
-disp(disthector4(end))
-disp(disthector5(end))
+% disp(disthector1(end))
+% disp(disthector2(end))
+% disp(disthector3(end))
+% disp(disthector4(end))
+% disp(disthector5(end))
+% disp('mean hect')
+% disp(mean([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)]))
+% disp('var hect')
+% disp(var([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)]))
+
+tst2 = [num2str(disthector1(end)), ' & ', num2str(disthector2(end)),' & ', num2str(disthector3(end)),' & ',num2str(disthector4(end)),' & ',num2str(disthector5(end)),' & ',num2str(mean([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)])),' & ',num2str(var([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)]))];
+disp(tst2)
+
+
 toc;
 
 
