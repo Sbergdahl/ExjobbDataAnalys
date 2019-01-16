@@ -1,8 +1,8 @@
 %data paths
 clear all
 tic;
-testcase = 'korridor'
-speed = 'medium'
+testcase = 'zigzag'
+speed = 'slow'
 fileNav = 'dead_navigation.txt'
 fileDeadReck ='dead_reckoning.txt'
 fileGyroReck ='dead_reckoning_gyro.txt'
@@ -64,8 +64,8 @@ hectorPath = fullfile(testCasePathHector)
 [xOdom5,yOdom5,thOdom5,timeOdom5] = importTfEcho(hectorPath,hectFile5, 1, 10);
 
 %%
-aGmap = -pi/2;
-aHect = -pi/2;
+aGmap = -pi;
+aHect = -pi;
 
 %rotate data to match
 rotateGmap1 = aGmap -thGmap1(1) ;
@@ -369,7 +369,8 @@ end
 % calculate distance between ground truth and the other vdt methods. 
 distDead = diag(pdist2(deadReck(:,2:3),navigation(:,2:3)));
 distGyro = diag(pdist2(deadGyro(:,2:3),navigation(:,2:3)));
-
+%distDead = getDistance(navigation,deadReck);
+%distGyro = getDistance(navigation,deadGyro);
 
 % downsample nav data and calculate dist Hector
 %look more at this but with the correct data
@@ -383,6 +384,17 @@ distGmap2 = getDistance(navigation, gmapData2);
 distGmap3 = getDistance(navigation, gmapData3);
 distGmap4 = getDistance(navigation, gmapData4);
 distGmap5 = getDistance(navigation, gmapData5);
+
+angleGmap1 = getAngle(abs(navigation), abs(gmapData1));
+angleGmap2 = getAngle(abs(navigation), abs(gmapData2));
+angleGmap3 = getAngle(abs(navigation), abs(gmapData3));
+angleGmap4 = getAngle(abs(navigation), abs(gmapData4));
+angleGmap5 = getAngle(abs(navigation), abs(gmapData5));
+angleHect1 = getAngle(abs(navigation), abs(hectorData1));
+angleHect2 = getAngle(abs(navigation), abs(hectorData2));
+angleHect3 = getAngle(abs(navigation), abs(hectorData3));
+angleHect4 = getAngle(abs(navigation), abs(hectorData4));
+angleHect5 = getAngle(abs(navigation), abs(hectorData5));
 
 %% make plots 
 
@@ -474,8 +486,11 @@ legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','
 
 angleGmap = getAngle(abs(navigation), abs(gmapData1));
 angleHect = getAngle(abs(navigation), abs(hectorData1));
-angleDead = getAngle(abs(navigation), abs(deadReck));
-angleGyro = getAngle(abs(navigation), abs(deadGyro));
+%angleDead = getAngle(abs(navigation), abs(deadReck));
+%angleGyro = getAngle(abs(navigation), abs(deadGyro));
+angleDead = abs(deadReck(:,4))-abs(navigation(:,4));
+angleGyro = abs(deadGyro(:,4))-abs(navigation(:,4));
+
 
 
 figure
@@ -503,8 +518,8 @@ legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','
 figure
 hold on
 title('Deviation From Ground Truth')
-plot(angleDead(:,1),angleDead(:,2),'LineWidth',1.2)
-plot(angleGyro(:,1),angleGyro(:,2),'g','LineWidth',1.2)
+plot(deadReck(:,1),abs(angleDead(:,1)),'LineWidth',1.2)
+plot(deadGyro(:,1),abs(angleGyro(:,1)),'g','LineWidth',1.2)
 %plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
 plot(angleHect(:,1),angleHect(:,2),'--','LineWidth',1.2)
 plot(angleGmap(:,1),angleGmap(:,2),'-.','LineWidth',1.2)
@@ -519,6 +534,9 @@ disp(distGyro(end))
 disp('slutavstånd gmap')
 tst = [num2str(distGmap1(end)), ' & ', num2str(distGmap2(end)),' & ', num2str(distGmap3(end)),' & ',num2str(distGmap4(end)),' & ',num2str(distGmap5(end)),' & ',num2str(mean([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)])),' & ',num2str(var([distGmap1(end) distGmap2(end) distGmap3(end) distGmap4(end) distGmap5(end)]))];
 disp(tst)
+
+
+
 % disp(distGmap1(end))
 % disp(distGmap2(end))
 % disp(distGmap3(end))
@@ -541,6 +559,19 @@ disp('slutavstånd hector')
 
 tst2 = [num2str(disthector1(end)), ' & ', num2str(disthector2(end)),' & ', num2str(disthector3(end)),' & ',num2str(disthector4(end)),' & ',num2str(disthector5(end)),' & ',num2str(mean([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)])),' & ',num2str(var([disthector1(end) disthector2(end) disthector3(end) disthector4(end) disthector5(end)]))];
 disp(tst2)
+
+
+disp(angleDead(end))
+disp(angleGyro(end))
+
+disp('slutvinkel gmap')
+tst12 = [num2str(angleGmap1(end)), ' & ', num2str(angleGmap2(end)),' & ', num2str(angleGmap3(end)),' & ',num2str(angleGmap4(end)),' & ',num2str(angleGmap5(end)),' & ',num2str(mean([angleGmap1(end) angleGmap2(end) angleGmap3(end) angleGmap4(end) angleGmap5(end)])),' & ',num2str(var([angleGmap1(end) angleGmap2(end) angleGmap3(end) angleGmap4(end) angleGmap5(end)]))];
+disp(tst12)
+
+
+disp('slutvinkel hector')
+tst22 = [num2str(angleHect1(end)), ' & ', num2str(angleHect2(end)),' & ', num2str(angleHect3(end)),' & ',num2str(angleHect4(end)),' & ',num2str(angleHect5(end)),' & ',num2str(mean([angleHect1(end) angleHect2(end) angleHect3(end) angleHect4(end) angleHect5(end)])),' & ',num2str(var([angleHect1(end) angleHect2(end) angleHect3(end) angleHect4(end) angleHect5(end)]))];
+disp(tst22)
 
 
 toc;
