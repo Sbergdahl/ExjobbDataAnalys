@@ -1,8 +1,9 @@
 %data paths
 clear all
 tic;
-testcase = 'zigzag'
-speed = 'slow'
+%testcase = 'zigzag'
+testcase = 'runt_utan_pelare'
+speed = 'medium'
 fileNav = 'dead_navigation.txt'
 fileDeadReck ='dead_reckoning.txt'
 fileGyroReck ='dead_reckoning_gyro.txt'
@@ -64,8 +65,10 @@ hectorPath = fullfile(testCasePathHector)
 [xOdom5,yOdom5,thOdom5,timeOdom5] = importTfEcho(hectorPath,hectFile5, 1, 10);
 
 %%
-aGmap = -pi;
-aHect = -pi;
+aGmap = -pi/2;
+aHect = -pi/2;
+% aGmap = -pi/2;
+% aHect = -pi/2;
 
 %rotate data to match
 rotateGmap1 = aGmap -thGmap1(1) ;
@@ -130,6 +133,11 @@ hectorData2(isoutlier(hectorData2(:,3),'movmedian',10),:)= [];
 hectorData3(isoutlier(hectorData3(:,3),'movmedian',10),:)= [];
 hectorData4(isoutlier(hectorData4(:,3),'movmedian',10),:)= [];
 hectorData5(isoutlier(hectorData5(:,3),'movmedian',10),:)= [];
+hectorData1(isoutlier(hectorData1(:,4),'movmedian',10),:)= [];
+hectorData2(isoutlier(hectorData2(:,4),'movmedian',10),:)= [];
+hectorData3(isoutlier(hectorData3(:,4),'movmedian',10),:)= [];
+hectorData4(isoutlier(hectorData4(:,4),'movmedian',10),:)= [];
+hectorData5(isoutlier(hectorData5(:,4),'movmedian',10),:)= [];
 
 gmapData1(isoutlier(gmapData1(:,2),'movmedian',10),:)= [];
 gmapData2(isoutlier(gmapData2(:,2),'movmedian',10),:)= [];
@@ -141,6 +149,11 @@ gmapData2(isoutlier(gmapData2(:,3),'movmedian',10),:)= [];
 gmapData3(isoutlier(gmapData3(:,3),'movmedian',10),:)= [];
 gmapData4(isoutlier(gmapData4(:,3),'movmedian',10),:)= [];
 gmapData5(isoutlier(gmapData5(:,3),'movmedian',10),:)= [];
+gmapData1(isoutlier(gmapData1(:,4),'movmedian',10),:)= [];
+gmapData2(isoutlier(gmapData2(:,4),'movmedian',10),:)= [];
+gmapData3(isoutlier(gmapData3(:,4),'movmedian',10),:)= [];
+gmapData4(isoutlier(gmapData4(:,4),'movmedian',10),:)= [];
+gmapData5(isoutlier(gmapData5(:,4),'movmedian',10),:)= [];
 
 %odom data
 odomData1(isoutlier(odomData1(:,2),'movmedian',10),:)= [];
@@ -400,13 +413,29 @@ angleHect5 = getAngle(abs(navigation), abs(hectorData5));
 
 figure
 hold on
-title('Deviation From Ground Truth')
-plot(deadReck(:,1),distDead,'LineWidth',1.2)
+title('Deviation From Ground Truth, Gmapping')
+plot(deadReck(:,1),distDead,'r','LineWidth',1.2)
 plot(deadGyro(:,1),distGyro,'g','LineWidth',1.2)
 %plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
-plot(hectorData1(:,1),disthector1,'--','LineWidth',1.2)
-plot(gmapData1(:,1),distGmap1,'-.','LineWidth',1.2)
-legend('Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
+plot(gmapData1(:,1),distGmap1,'b','LineWidth',1.2)
+plot(gmapData2(:,1),distGmap2,'b','LineWidth',1.2)
+plot(gmapData3(:,1),distGmap3,'b','LineWidth',1.2)
+plot(gmapData4(:,1),distGmap4,'b','LineWidth',1.2)
+plot(gmapData5(:,1),distGmap5,'b','LineWidth',1.2)
+legend('Dead Reckoning','Dead reckoning with IMU','Gmapping')
+
+figure
+hold on
+title('Deviation From Ground Truth, Hector')
+plot(deadReck(:,1),distDead,'r','LineWidth',1.2)
+plot(deadGyro(:,1),distGyro,'g','LineWidth',1.2)
+%plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
+plot(hectorData1(:,1),disthector1,'b','LineWidth',1.2)
+plot(hectorData2(:,1),disthector2,'b','LineWidth',1.2)
+plot(hectorData3(:,1),disthector3,'b','LineWidth',1.2)
+plot(hectorData4(:,1),disthector4,'b','LineWidth',1.2)
+plot(hectorData5(:,1),disthector5,'b','LineWidth',1.2)
+legend('Dead Reckoning','Dead reckoning with IMU','Hector')
 
 
 figure()
@@ -484,8 +513,16 @@ plot(hectorData1(:,1),hectorData1(:,3),'r--')
 plot(gmapData1(:,1),gmapData1(:,3),'m-.')
 legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
 
-angleGmap = getAngle(abs(navigation), abs(gmapData1));
-angleHect = getAngle(abs(navigation), abs(hectorData1));
+angleGmap1 = getAngle(abs(navigation), abs(gmapData1));
+angleGmap2 = getAngle(abs(navigation), abs(gmapData2));
+angleGmap3 = getAngle(abs(navigation), abs(gmapData3));
+angleGmap4 = getAngle(abs(navigation), abs(gmapData4));
+angleGmap5 = getAngle(abs(navigation), abs(gmapData5));
+angleHect1 = getAngle(abs(navigation), abs(hectorData1));
+angleHect2 = getAngle(abs(navigation), abs(hectorData2));
+angleHect3 = getAngle(abs(navigation), abs(hectorData3));
+angleHect4 = getAngle(abs(navigation), abs(hectorData4));
+angleHect5 = getAngle(abs(navigation), abs(hectorData5));
 %angleDead = getAngle(abs(navigation), abs(deadReck));
 %angleGyro = getAngle(abs(navigation), abs(deadGyro));
 angleDead = abs(deadReck(:,4))-abs(navigation(:,4));
@@ -493,20 +530,20 @@ angleGyro = abs(deadGyro(:,4))-abs(navigation(:,4));
 
 
 
-figure
-hold on
-title('Angle')
-plot(navigation(:,1),navigation(:,4),'k')
-plot(deadReck(:,1),deadReck(:,4))
-plot(deadGyro(:,1),deadGyro(:,4),'g')
-%plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
-plot(hectorData1(:,1),hectorData1(:,4),'r--')
-plot(gmapData1(:,1),gmapData1(:,4),'m-.')
-legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
+% figure
+% hold on
+% title('Angle')
+% plot(navigation(:,1),navigation(:,4),'k')
+% plot(deadReck(:,1),deadReck(:,4))
+% plot(deadGyro(:,1),deadGyro(:,4),'g')
+% %plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
+% plot(hectorData1(:,1),hectorData1(:,4),'r--')
+% plot(gmapData1(:,1),gmapData1(:,4),'m-.')
+% legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
 
 figure
 hold on
-title('Angle')
+title('Angle of AGV')
 plot(abs(navigation(:,1)),abs(navigation(:,4)),'k')
 plot(abs(deadReck(:,1)),abs(deadReck(:,4)))
 plot(abs(deadGyro(:,1)),abs(deadGyro(:,4)),'g')
@@ -517,13 +554,30 @@ legend('Ground Truth','Dead Reckoning','Dead reckoning with IMU','Hector SLAM','
 
 figure
 hold on
-title('Deviation From Ground Truth')
-plot(deadReck(:,1),abs(angleDead(:,1)),'LineWidth',1.2)
+title('Angular Deviation From Ground Truth, Gmapping')
+plot(deadReck(:,1),abs(angleDead(:,1)),'r','LineWidth',1.2)
 plot(deadGyro(:,1),abs(angleGyro(:,1)),'g','LineWidth',1.2)
 %plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
-plot(angleHect(:,1),angleHect(:,2),'--','LineWidth',1.2)
-plot(angleGmap(:,1),angleGmap(:,2),'-.','LineWidth',1.2)
-legend('Dead Reckoning','Dead reckoning with IMU','Hector SLAM','Gmapping')
+plot(angleGmap1(:,1),angleGmap1(:,2),'b','LineWidth',1.2)
+plot(angleGmap2(:,1),angleGmap2(:,2),'b','LineWidth',1.2)
+plot(angleGmap3(:,1),angleGmap3(:,2),'b','LineWidth',1.2)
+plot(angleGmap4(:,1),angleGmap4(:,2),'b','LineWidth',1.2)
+plot(angleGmap5(:,1),angleGmap5(:,2),'b','LineWidth',1.2)
+legend('Dead Reckoning','Dead reckoning with IMU','Gmapping')
+
+
+figure
+hold on
+title('Angular Deviation From Ground Truth, Hector')
+plot(deadReck(:,1),abs(angleDead(:,1)),'r','LineWidth',1.2)
+plot(deadGyro(:,1),abs(angleGyro(:,1)),'g','LineWidth',1.2)
+%plot(rosOdo(:,1)-rosOdo(1,1),distRosOdo)
+plot(angleHect1(:,1),angleHect1(:,2),'b','LineWidth',1.2)
+plot(angleHect2(:,1),angleHect2(:,2),'b','LineWidth',1.2)
+plot(angleHect3(:,1),angleHect3(:,2),'b','LineWidth',1.2)
+plot(angleHect4(:,1),angleHect4(:,2),'b','LineWidth',1.2)
+plot(angleHect5(:,1),angleHect5(:,2),'b','LineWidth',1.2)
+legend('Dead Reckoning','Dead reckoning with IMU','Hector')
 
 %%
 
