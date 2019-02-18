@@ -1,9 +1,11 @@
 %data paths
 clear all
 tic;
-%testcase = 'zigzag'
-testcase = 'runt_utan_pelare'
-speed = 'medium'
+testcase = 'zigzag'
+% testcase = 'runt_utan_pelare'
+% testcase = 'runt_med_pelare'
+% testcase = 'korridor'
+speed = 'fast'
 fileNav = 'dead_navigation.txt'
 fileDeadReck ='dead_reckoning.txt'
 fileGyroReck ='dead_reckoning_gyro.txt'
@@ -65,8 +67,8 @@ hectorPath = fullfile(testCasePathHector)
 [xOdom5,yOdom5,thOdom5,timeOdom5] = importTfEcho(hectorPath,hectFile5, 1, 10);
 
 %%
-aGmap = -pi/2;
-aHect = -pi/2;
+aGmap = -pi;
+aHect = -pi;
 % aGmap = -pi/2;
 % aHect = -pi/2;
 
@@ -228,6 +230,38 @@ timegmap5 = gmapData5(1,1)-gmapData5(end,1)
 % deadGyro(deadGyro(:, 1)< navigation(1,1), :)= [];
 % deadReck(deadReck(:, 1)> navigation(end,1), :)= [];
 % deadGyro(deadGyro(:, 1)> navigation(end,1), :)= [];
+
+% startTime = 1.5451281694*10^9
+%     navigation(navigation(:, 1)< startTime, :)= [];
+%     deadReck(deadReck(:, 1)< startTime, :)= [];
+%     deadGyro(deadGyro(:, 1)< startTime, :)= [];
+%     hectorData1(hectorData1(:,1) < startTime, :) = [];
+%     hectorData2(hectorData2(:,1) < startTime, :) = [];
+%     hectorData3(hectorData3(:,1) < startTime, :) = [];
+%     hectorData4(hectorData4(:,1) < startTime, :) = [];
+%     hectorData5(hectorData5(:,1) < startTime, :) = [];
+%     gmapData1(gmapData1(:,1) < startTime, :) = [];
+%     gmapData2(gmapData2(:,1) < startTime, :) = [];
+%     gmapData3(gmapData3(:,1) < startTime, :) = [];
+%     gmapData4(gmapData4(:,1) < startTime, :) = [];
+%     gmapData5(gmapData5(:,1) < startTime, :) = [];
+% 
+% endTime= 1.5451283420*10^9
+%     navigation(navigation(:, 1)> endTime, :)= [];
+%     deadReck(deadReck(:, 1)> endTime, :)= [];
+%     deadGyro(deadGyro(:, 1)> endTime, :)= [];
+%     hectorData1(hectorData1(:,1) > endTime, :) = [];
+%     hectorData2(hectorData2(:,1) > endTime, :) = [];
+%     hectorData3(hectorData3(:,1) > endTime, :) = [];
+%     hectorData4(hectorData4(:,1) > endTime, :) = [];
+%     hectorData5(hectorData5(:,1) > endTime, :) = [];
+%     gmapData1(gmapData1(:,1) > endTime, :) = [];
+%     gmapData2(gmapData2(:,1) > endTime, :) = [];
+%     gmapData3(gmapData3(:,1) > endTime, :) = [];
+%     gmapData4(gmapData4(:,1) > endTime, :) = [];
+%     gmapData5(gmapData5(:,1) > endTime, :) = [];
+    
+    
 
 % prune length w.r.t start time 
 if navigation(1,1) >=  max([deadReck(1,1) deadGyro(1,1) hectorData1(1,1) gmapData1(1,1)])
